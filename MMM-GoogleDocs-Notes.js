@@ -14,12 +14,18 @@ Module.register('MMM-GoogleDocs-Notes', {
     this.notesData = [];
 
     this.sendSocketNotification("MMM-GOOGLEDOCS-NOTES-GET", this.config);
-    var self = this;
+    const self = this;
     setInterval(function() {
       self.sendSocketNotification("MMM-GOOGLEDOCS-NOTES-GET", self.config);
     }, this.config.pollFrequency);
   },
 
+  getTranslations: function() {
+    return {
+      en: "translations/en.json",
+      de: "translations/de.json"
+    }
+  },
   getStyles: function () {
     return ["MMM-GoogleDocs-Notes.css"];
   },
@@ -46,20 +52,21 @@ Module.register('MMM-GoogleDocs-Notes', {
   },
 
   formatDate: function(dateString) {
-    var d = moment(dateString);
-    var today = moment();
+    const self = this;
+    const d = moment(dateString);
+    const today = moment();
 
     if (d.isSame(today, 'day')) {
-      return "today at " + d.format(this.config.dateFormatRel);
+      return `${self.translate("TODAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatRel)}`;
     } else if (d.isSame(moment(today).subtract(1, 'days'), 'day')) {
-      return "yesterday at " + d.format(this.config.dateFormatRel);
+      return `${self.translate("YESTERDAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatRel)}`;
     } else {
       return d.format(this.config.dateFormatExact);
     }
   },
 
   getDom: function() {
-    var self = this;
+    const self = this;
 
     var wrapper = document.createElement("div");
     wrapper.classList.add("wrapper");
@@ -82,7 +89,7 @@ Module.register('MMM-GoogleDocs-Notes', {
       if (self.config.showDatePosted) {
         var noteDateStamp = document.createElement("span");
         noteDateStamp.classList.add("note-date-stamp");
-        noteDateStamp.innerHTML = "Posted " + self.formatDate(noteObj.dateStamp);
+        noteDateStamp.innerHTML = `${self.translate("POSTED")} ${self.formatDate(noteObj.dateStamp)}`;
         noteContainer.appendChild(noteDateStamp);
       }
 

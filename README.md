@@ -15,13 +15,14 @@ This module displays a Google Doc as note from your Google account.
 
 2. Enter the new `MMM-GoogleDocs-Notes` directory and execute `npm install`.
 
-3. Add the module to your config (see below).
+3. Create a Google Doc and write the note you want to display at the MagicMirror. (use `MMM` as title or remember it for later configuration of the `notetitle` key)
+
+4. Add the module to your config (see below).
 
 ## Google Keep
 Unfortunately Google does not provide an API for Keep to query the content for a note from there. Therefore we use a Google Doc that can be edited by multiple users.
 
 ## Authorization
-
 It is very important that you follow these steps although they are not very exact but you should be able to follow. Before this module will work, you need to grant authorization for this module to access your Google Drive account.
 
 1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. Don't use an existing one, as we need to make some specific configurations that may conflict with your existing project.
@@ -38,10 +39,18 @@ It is very important that you follow these steps although they are not very exac
 12. Click *OK* to dismiss the resulting dialog.
 13. Click the file download icon button to the right of the client ID.
 14. Rename this file `client_secret.json` and copy it to your MMM-GoogleDocs-Notes directory.
-15. In the *MMM-GoogleDocs-Notes* directory execute `node authorize.js`.
+15. In the *MMM-GoogleDocs-Notes* directory execute  `sudo -u pi -- node authorize.js` (Change `pi` to the user that runs the Magic Mirror application).
 16. Follow the instructions to authorize the Google account for which you want to display notes on your mirror.
 
-If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in your console. Now you can configure your module as below:
+If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in your console. Now you can configure your module as below.
+
+Note: This application uses the following scopes:
+```text
+https://www.googleapis.com/auth/drive.metadata
+https://www.googleapis.com/auth/drive.readonly
+https://www.googleapis.com/auth/drive.file
+```
+
 
 ## Configuration
 
@@ -99,6 +108,14 @@ If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in 
 },
 
 ```
+
+## Troubleshooting
+### OAuth
+Since the OAuth-Authorization-Token is stored in the users home directory make sure to execute `node authorize.js` as the same user that runs the MagicMirror instance (user `pi` in my case).
+To ensure it execute the command explicitly as user `pi`: `sudo -u pi -- node authorize.js`
+### Outputs
+While setup watch the logs: `tail -f /home/pi/.pm2/logs/mm-out.log`. Log messages are prefixed with `[MMM-GoogleDocs-Notes]`. Watch out for scope errors and urls to open your browser in case the scope is not sufficient (like `The drive API returned an error: Error: Insufficient Permission: Request had insufficient authentication scopes.`).
+
 
 ## Credits
 This module uses the scaffolding of https://github.com/jclarke0000/MMM-MyNotes.git which served as starting point. Most functionality was taken from it but the interaction with the Drive API was added and some modifications were made.

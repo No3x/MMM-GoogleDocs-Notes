@@ -73,7 +73,8 @@ module.exports = NodeHelper.create({
           const modifiedTime = (await drive.files.get({
             fileId: noteDocumentId,
             fields: ['modifiedTime']
-          })).data;
+          })).data.modifiedTime;
+
           console.log(`[MMM-GoogleDocs-Notes] last modified time of the note: ${modifiedTime}`);
 
           try {

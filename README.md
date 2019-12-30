@@ -64,7 +64,7 @@ https://www.googleapis.com/auth/drive.file
   <tbody>
     <tr>
       <td><code>maxNotes</code></td>
-      <td>The maximum number of your most recent notes to display<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>10</code></td>
+      <td>The maximum number of your most recent notes to display<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>10</code><br><br><strong>Currently not supported</strong></td>
     </tr>
     <tr>
       <td><code>pollFrequency</code></td>
@@ -91,6 +91,7 @@ https://www.googleapis.com/auth/drive.file
 
 ## Sample Config
 
+Note: `maxNotes` is not supported yet. The current procedure: it queries for all documents, filters by the `notetitle`, orders by the last edited document and uses the first result.
 ```
 {
   module: 'MMM-GoogleDocs-Notes',
@@ -98,7 +99,7 @@ https://www.googleapis.com/auth/drive.file
   position: 'top_right',
   classes: 'default everyone',
   config: {
-    maxNotes: 2,
+    maxNotes: 2, // currently not supported
     pollFrequency: 5 * 60 * 1000, //5 minutes;
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',
@@ -106,7 +107,6 @@ https://www.googleapis.com/auth/drive.file
     notetitle: 'MMM'
   }
 },
-
 ```
 
 ## Troubleshooting

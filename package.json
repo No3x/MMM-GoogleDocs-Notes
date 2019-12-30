@@ -1,0 +1,20 @@
+{
+  "name": "mmmgoogledocsnotes",
+  "version": "1.0.0",
+  "description": "Magic Mirror Module to display GoogleDocs notes",
+  "main": "MMM-GoogleDocs-Notes.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "No3x",
+  "license": "MIT",
+  "dependencies": {
+    "google-auth-library": "0.10.0",
+    "googleapis": "^39.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2"
+  }
+}

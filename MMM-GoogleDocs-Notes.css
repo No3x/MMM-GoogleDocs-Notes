@@ -1,0 +1,21 @@
+.MMM-GoogleDocs-Notes .note-container {
+  margin: 0;
+  padding: 6px 0;
+  border-bottom: solid 1px #222;
+  position: relative;
+}
+
+.MMM-GoogleDocs-Notes .note-container .note-body {
+  text-align: left;
+  font-size: 20px;
+  line-height: 25px;
+  display: block;
+  margin: 0;
+}
+
+.MMM-GoogleDocs-Notes .note-container .note-date-stamp {
+  text-align: right;
+  font-size: 15px;
+  line-height: 18px;
+  display: block;
+}

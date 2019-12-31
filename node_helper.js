@@ -1,3 +1,10 @@
+/* Magic Mirror
+ * Node Helper: MMM-GoogleDocs-Notes
+ *
+ * By No3x
+ * MIT Licensed.
+ */
+
 const NodeHelper = require('node_helper');
 const fs = require('fs');
 const { google } = require('googleapis');
@@ -24,7 +31,7 @@ module.exports = NodeHelper.create({
     const oAuth2Client = new google.auth.OAuth2(
         client_id,
         client_secret,
-        redirect_uris[0],
+        redirect_uris[0]
     );
 
     // Check if we have previously stored a token.
@@ -117,6 +124,12 @@ module.exports = NodeHelper.create({
     }
   },
 
+  /* socketNotificationReceived(notification, payload)
+	 * This method is called when a socket notification arrives.
+	 *
+	 * argument notification string - The identifier of the noitication.
+	 * argument payload mixed - The payload of the notification.
+	 */
   socketNotificationReceived(notification, payload) {
     if (notification === 'MMM-GOOGLEDOCS-NOTES-GET') {
       if (config == null) {

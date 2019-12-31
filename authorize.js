@@ -1,3 +1,10 @@
+/* Magic Mirror
+ * Module: MMM-GoogleDocs-Notes
+ *
+ * By No3x
+ * MIT Licensed.
+ */
+
 const fs = require('fs');
 const readline = require('readline');
 const { googleAuth } = require('google-auth-library');

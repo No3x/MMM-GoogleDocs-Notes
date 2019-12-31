@@ -1,3 +1,12 @@
+/* global Module */
+
+/* Magic Mirror
+ * Module: MMM-GoogleDocs-Notes
+ *
+ * By No3x
+ * MIT Licensed.
+ */
+
 Module.register('MMM-GoogleDocs-Notes', {
 
   defaults: {

@@ -6,6 +6,7 @@
  */
 
 const NodeHelper = require('node_helper');
+const {DOMParser, XMLSerializer} = require('xmldom');
 const fs = require('fs');
 const { google } = require('googleapis');
 
@@ -87,13 +88,22 @@ module.exports = NodeHelper.create({
           try {
             const content = (await drive.files.export({
               fileId: noteDocumentId,
-              mimeType: 'text/plain'
+              mimeType: 'text/html'
             })).data;
-            console.log(`[MMM-GoogleDocs-Notes] content of your note: ${content}`);
+
+            console.log(`[MMM-GoogleDocs-Notes] doc content of your note: ${content}`);
+
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(content, 'text/html');
+            const el = doc.getElementsByTagName('body')[0];
+            const ser = new XMLSerializer();
+            const htmlContent = ser.serializeToString(el);
+
+            console.log(`[MMM-GoogleDocs-Notes] html content of your note: ${htmlContent}`);
 
             const notes = [
               {
-                noteText: content,
+                noteText: htmlContent,
                 dateStamp: modifiedTime
               }
             ];

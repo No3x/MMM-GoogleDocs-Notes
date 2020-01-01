@@ -10,7 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "google-auth-library": "0.10.0",
-    "googleapis": "^39.2.0"
+    "googleapis": "^39.2.0",
+    "xmldom": "^0.2.1"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

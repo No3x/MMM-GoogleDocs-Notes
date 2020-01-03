@@ -3,15 +3,19 @@
   "version": "1.0.0",
   "description": "Magic Mirror Module to display GoogleDocs notes",
   "main": "MMM-GoogleDocs-Notes.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/No3x/MMM-GoogleDocs-Notes.git"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "No3x",
   "license": "MIT",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "google-auth-library": "0.10.0",
-    "googleapis": "^39.2.0",
-    "xmldom": "^0.2.1"
+    "googleapis": "^39.2.0"
   },
   "devDependencies": {
     "eslint": "^6.8.0",

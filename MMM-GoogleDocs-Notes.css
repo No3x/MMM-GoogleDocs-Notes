@@ -26,3 +26,8 @@
   line-height: 18px;
   display: block;
 }
+
+.MMM-GoogleDocs-Notes .note-container img {
+  width: 100%;
+  height: auto;
+}

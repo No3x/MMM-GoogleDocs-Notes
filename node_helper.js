@@ -6,7 +6,7 @@
  */
 
 const NodeHelper = require('node_helper');
-const {DOMParser, XMLSerializer} = require('xmldom');
+const cheerio = require("cheerio");
 const fs = require('fs');
 const { google } = require('googleapis');
 
@@ -91,15 +91,15 @@ module.exports = NodeHelper.create({
               mimeType: 'text/html'
             })).data;
 
-            console.log(`[MMM-GoogleDocs-Notes] doc content of your note: ${content}`);
+            //console.log(`[MMM-GoogleDocs-Notes] doc content of your note: ${content}`);
 
-            const parser = new DOMParser();
-            const doc = parser.parseFromString(content, 'text/html');
-            const el = doc.getElementsByTagName('body')[0];
-            const ser = new XMLSerializer();
-            const htmlContent = ser.serializeToString(el);
+            let $ = cheerio.load(content);
+            $('*').css("width", "");
+            $('*').css("height", "");
 
-            console.log(`[MMM-GoogleDocs-Notes] html content of your note: ${htmlContent}`);
+            const htmlContent = $('body').html();
+
+            //console.log(`[MMM-GoogleDocs-Notes] html content of your note: ${htmlContent}`);
 
             const notes = [
               {

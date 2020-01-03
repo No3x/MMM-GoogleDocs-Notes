@@ -7,7 +7,7 @@
 
 const fs = require('fs');
 const readline = require('readline');
-const { googleAuth } = require('google-auth-library');
+const googleAuth = require('google-auth-library');
 
 const SCOPES = [
   'https://www.googleapis.com/auth/drive.metadata',

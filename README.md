@@ -6,8 +6,7 @@ https://github.com/MichMich/MagicMirror
 
 This module displays a Google Doc as note from your Google account.
 
-
-![image](https://user-images.githubusercontent.com/2690708/71584457-ec2d0300-2b12-11ea-9ad8-32c94356dfa2.png)
+![result](https://user-images.githubusercontent.com/2690708/71768783-e2900a80-2f19-11ea-874d-964ad42b9dd6.png)
 
 ## Installation
 
@@ -116,6 +115,12 @@ To ensure it execute the command explicitly as user `pi`: `sudo -u pi -- node au
 ### Outputs
 While setup watch the logs: `tail -f /home/pi/.pm2/logs/mm-out.log`. Log messages are prefixed with `[MMM-GoogleDocs-Notes]`. Watch out for scope errors and urls to open your browser in case the scope is not sufficient (like `The drive API returned an error: Error: Insufficient Permission: Request had insufficient authentication scopes.`).
 
+## Tips
+![contents](https://user-images.githubusercontent.com/2690708/71768782-e2900a80-2f19-11ea-8823-e9e3a6ac2c14.png)
+
+1. Change the background color of your Google Doc to match your MagicMirror background. This way you can design your contents to look good on the mirror. `File > Page setup > Page color`
+2. Widths and heights of elements are removed for all elements to support responsive images (e.g. see the table column widths)
+3. Use all Google Docs features like embedding charts from a Google Sheet. The embedded chart has a recolor image effect `Negative` that is unfortunately not properly exported. But you can change the colors of the diagram in the source document - with this the export works fine.
 
 ## Credits
 This module uses the scaffolding of https://github.com/jclarke0000/MMM-MyNotes.git which served as starting point. Most functionality was taken from it but the interaction with the Drive API was added and some modifications were made.

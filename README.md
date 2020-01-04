@@ -14,7 +14,7 @@ This module displays a Google Doc as note from your Google account.
 
 2. Enter the new `MMM-GoogleDocs-Notes` directory and execute `npm install`.
 
-3. Create a Google Doc and write the note you want to display at the MagicMirror. (use `MMM` as title or remember it for later configuration of the `notetitle` key)
+3. Create a Google Doc and write the note you want to display at the MagicMirror. (use `MMM` as title or remember it for later configuration of the `notesPrefix` key)
 
 4. Add the module to your config (see below).
 
@@ -82,15 +82,15 @@ https://www.googleapis.com/auth/drive.file
       <td>the short date format to use for the posted date (today and yesterday). Uses Moment.js supported date formats (https://momentjs.com/docs/#/displaying/)<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>HH:mm</code></td>
     </tr>
     <tr>
-      <td><code>notetitle</code></td>
-      <td>the title of the document you store your note in.<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>MMM</code></td>
+      <td><code>notesPrefix</code></td>
+      <td>the prefix of your documents titles you store your note in.<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>MMM</code></td>
     </tr>
   </tbody>
 </table>
 
 ## Sample Config
 
-The current procedure: it queries for all documents, filters by titles that start with `notetitle`, orders by the last edited document and displays at most `maxNotes` number of noes.
+The current procedure: it queries for all documents, filters by titles that start with `notesPrefix`, orders by the last edited document and displays at most `maxNotes` number of noes.
 ```
 {
   module: 'MMM-GoogleDocs-Notes',
@@ -103,7 +103,7 @@ The current procedure: it queries for all documents, filters by titles that star
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',
     dateFormatRel: 'HH:mm',
-    notetitle: 'MMM'
+    notesPrefix: 'MMM'
   }
 },
 ```

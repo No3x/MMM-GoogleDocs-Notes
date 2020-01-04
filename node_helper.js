@@ -67,11 +67,11 @@ module.exports = NodeHelper.create({
     try {
       const { files } = (await drive.files.list({
         orderBy: 'modifiedTime',
-        q: `name starts with '${config.notetitle}'`
+        q: `name starts with '${config.notesPrefix}'`
       })).data;
 
       // console.log(JSON.stringify(files, null, 4));
-      console.log(`[MMM-GoogleDocs-Notes] Found ${files.length} documents in drive matching the search 'title starts with ${config.notetitle}'.`);
+      console.log(`[MMM-GoogleDocs-Notes] Found ${files.length} documents in drive matching the search 'title starts with ${config.notesPrefix}'.`);
 
       if (!files.length > 0) {
         console.log('[MMM-GoogleDocs-Notes] Did not find your note in drive.');

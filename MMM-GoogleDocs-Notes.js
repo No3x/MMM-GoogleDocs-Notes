@@ -15,7 +15,7 @@ Module.register('MMM-GoogleDocs-Notes', {
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',
     dateFormatRel: 'HH:mm',
-    notetitle: 'MMM'
+    notesPrefix: 'MMM'
   },
 
   start: function() {

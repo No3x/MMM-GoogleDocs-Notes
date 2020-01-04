@@ -78,7 +78,7 @@ https://www.googleapis.com/auth/drive.file
       <td>the date format to use for the exact posted date (not today and not yesterday).  Uses Moment.js supported date formats (https://momentjs.com/docs/#/displaying/)<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>YYYY-MM-DD HH:mm</code></td>
     </tr>
     <tr>
-      <td><code>dateFormatRel</code></td>
+      <td><code>dateFormatShort</code></td>
       <td>the short date format to use for the posted date (today and yesterday). Uses Moment.js supported date formats (https://momentjs.com/docs/#/displaying/)<br><br><strong>Type</strong> <code>String</code><br>Defaults to <code>HH:mm</code></td>
     </tr>
     <tr>
@@ -102,7 +102,7 @@ The current procedure: it queries for all documents, filters by titles that star
     pollFrequency: 5 * 60 * 1000, //5 minutes;
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',
-    dateFormatRel: 'HH:mm',
+    dateFormatShort: 'HH:mm',
     notesPrefix: 'MMM'
   }
 },

@@ -14,7 +14,7 @@ Module.register('MMM-GoogleDocs-Notes', {
     pollFrequency: 5 * 60 * 1000, //5 minutes;
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',
-    dateFormatRel: 'HH:mm',
+    dateFormatShort: 'HH:mm',
     notesPrefix: 'MMM'
   },
 
@@ -66,9 +66,9 @@ Module.register('MMM-GoogleDocs-Notes', {
     const today = moment();
 
     if (d.isSame(today, 'day')) {
-      return `${self.translate("TODAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatRel)}`;
+      return `${self.translate("TODAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatShort)}`;
     } else if (d.isSame(moment(today).subtract(1, 'days'), 'day')) {
-      return `${self.translate("YESTERDAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatRel)}`;
+      return `${self.translate("YESTERDAY").toLowerCase()} ${self.translate("AT").toLowerCase()} ${d.format(this.config.dateFormatShort)}`;
     } else {
       return d.format(this.config.dateFormatExact);
     }

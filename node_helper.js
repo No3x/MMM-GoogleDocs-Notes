@@ -65,23 +65,28 @@ module.exports = NodeHelper.create({
 
     const drive = google.drive({ version: 'v3', auth });
     try {
-      const files = (await drive.files.list({
+      const { files } = (await drive.files.list({
         orderBy: 'modifiedTime',
-        q: `name='${config.notetitle}'`
-      })).data.files;
+        q: `name starts with '${config.notetitle}'`
+      })).data;
 
       // console.log(JSON.stringify(files, null, 4));
-      console.log(`[MMM-GoogleDocs-Notes] Found ${files.length} documents in drive matching the search ${config.notetitle}.`);
+      console.log(`[MMM-GoogleDocs-Notes] Found ${files.length} documents in drive matching the search 'title starts with ${config.notetitle}'.`);
 
-      if (files.length > 0) {
-        const noteDocumentId = files[0].id;
+      if (!files.length > 0) {
+        console.log('[MMM-GoogleDocs-Notes] Did not find your note in drive.');
+      }
+
+      const notes = [];
+      for (const note of files) {
+        const noteDocumentId = note.id;
         console.log(`[MMM-GoogleDocs-Notes] noteDocumentId: ${noteDocumentId}`);
 
         try {
-          const modifiedTime = (await drive.files.get({
+          const { modifiedTime } = (await drive.files.get({
             fileId: noteDocumentId,
             fields: ['modifiedTime']
-          })).data.modifiedTime;
+          })).data;
 
           console.log(`[MMM-GoogleDocs-Notes] last modified time of the note: ${modifiedTime}`);
 
@@ -101,35 +106,28 @@ module.exports = NodeHelper.create({
 
             //console.log(`[MMM-GoogleDocs-Notes] html content of your note: ${htmlContent}`);
 
-            const notes = [
-              {
-                noteText: htmlContent,
-                dateStamp: modifiedTime
-              }
-            ];
-            moduleInstance.sendSocketNotification(
-                'MMM-GOOGLEDOCS-NOTES-RESPONSE',
-                { data: notes }
-            );
+            notes.push({
+              noteText: htmlContent,
+              dateStamp: modifiedTime
+            });
           } catch (err) {
             console.log(
-                `[MMM-GoogleDocs-Notes] Failed to get the content of your note. The docs API returned an error: ${err}`
+              `[MMM-GoogleDocs-Notes] Failed to get the content of your note. The docs API returned an error: ${err}`
             );
           }
         } catch (err) {
           console.log(
-              `[MMM-GoogleDocs-Notes] Failed to get the last modified time of your note. The docs API returned an error: ${err}`
+            `[MMM-GoogleDocs-Notes] Failed to get the last modified time of your note. The docs API returned an error: ${err}`
           );
         }
-      } else {
-        console.log('[MMM-GoogleDocs-Notes] Did not find your note in drive.');
-        moduleInstance.sendSocketNotification('MMM-GOOGLEDOCS-NOTES-RESPONSE', {
-          data: []
-        });
       }
+      moduleInstance.sendSocketNotification(
+        'MMM-GOOGLEDOCS-NOTES-RESPONSE',
+        { data: notes }
+      );
     } catch (err) {
       console.log(
-          `[MMM-GoogleDocs-Notes] Failed to list the documents in your drive. The docs API returned an error: ${err}`
+        `[MMM-GoogleDocs-Notes] Failed to list the documents in your drive. The docs API returned an error: ${err}`
       );
     }
   },

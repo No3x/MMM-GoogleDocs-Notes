@@ -10,7 +10,7 @@
 Module.register('MMM-GoogleDocs-Notes', {
 
   defaults: {
-    maxNotes: 10,
+    maxNotes: 2,
     pollFrequency: 5 * 60 * 1000, //5 minutes;
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',

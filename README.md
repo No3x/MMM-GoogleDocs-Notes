@@ -63,11 +63,11 @@ https://www.googleapis.com/auth/drive.file
   <tbody>
     <tr>
       <td><code>maxNotes</code></td>
-      <td>The maximum number of your most recent notes to display<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>10</code><br><br><strong>Currently not supported</strong></td>
+      <td>The maximum number of your most recent documents to display<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>2</code></td>
     </tr>
     <tr>
       <td><code>pollFrequency</code></td>
-      <td>How frequently to poll your GMail account for changes in notes.<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>300000</code> (5 minutes)</td>
+      <td>How frequently to poll Drive for documents.<br><br><strong>Type</strong> <code>Number</code><br>Defaults to <code>300000</code> (5 minutes)</td>
     </tr>
     <tr>
       <td><code>showDatePosted</code></td>
@@ -90,7 +90,7 @@ https://www.googleapis.com/auth/drive.file
 
 ## Sample Config
 
-Note: `maxNotes` is not supported yet. The current procedure: it queries for all documents, filters by the `notetitle`, orders by the last edited document and uses the first result.
+The current procedure: it queries for all documents, filters by titles that start with `notetitle`, orders by the last edited document and displays at most `maxNotes` number of noes.
 ```
 {
   module: 'MMM-GoogleDocs-Notes',
@@ -98,7 +98,7 @@ Note: `maxNotes` is not supported yet. The current procedure: it queries for all
   position: 'top_right',
   classes: 'default everyone',
   config: {
-    maxNotes: 2, // currently not supported
+    maxNotes: 2,
     pollFrequency: 5 * 60 * 1000, //5 minutes;
     showDatePosted: true,
     dateFormatExact: 'YYYY-MM-DD HH:mm',

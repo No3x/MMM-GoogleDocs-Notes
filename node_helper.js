@@ -64,11 +64,12 @@ module.exports = NodeHelper.create({
     console.log('[MMM-GoogleDocs-Notes] getNoteData');
 
     const drive = google.drive({ version: 'v3', auth });
+    const options = {
+      orderBy: 'modifiedTime',
+      q: `name starts with '${config.notesPrefix}'`
+    };
     try {
-      const { files } = (await drive.files.list({
-        orderBy: 'modifiedTime',
-        q: `name starts with '${config.notesPrefix}'`
-      })).data;
+      const { files } = (await drive.files.list(options)).data;
 
       // console.log(JSON.stringify(files, null, 4));
       console.log(`[MMM-GoogleDocs-Notes] Found ${files.length} documents in drive matching the search ${JSON.stringify(options)}.`);

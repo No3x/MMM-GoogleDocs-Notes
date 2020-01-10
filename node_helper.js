@@ -66,7 +66,7 @@ module.exports = NodeHelper.create({
     const drive = google.drive({ version: 'v3', auth });
     const options = {
       orderBy: 'modifiedTime',
-      q: `name starts with '${config.notesPrefix}'`
+      q: `mimeType = 'application/vnd.google-apps.document' and name starts with '${config.notesPrefix}' and trashed = false`
     };
     try {
       const { files } = (await drive.files.list(options)).data;

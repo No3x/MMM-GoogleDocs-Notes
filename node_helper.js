@@ -55,6 +55,48 @@ module.exports = NodeHelper.create({
       '[MMM-GoogleDocs-Notes] Creating a token is an interactive process that requires user input. For that please run \\"node authorize.js\\" in the MMM-GoogleDocs-Notes directory'
     );
   },
+  async getTask(drive, noteDocumentId) {
+    try {
+      const { modifiedTime } = (await drive.files.get({
+        fileId: noteDocumentId,
+        fields: ['modifiedTime']
+      })).data;
+
+      console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] last modified time of the note: ${modifiedTime}`);
+
+      try {
+        const content = (await drive.files.export({
+          fileId: noteDocumentId,
+          mimeType: 'text/html'
+        })).data;
+
+        // console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] doc content of your note: ${content}`);
+
+        const $ = cheerio.load(content);
+        $('*').css('width', '');
+        $('*').css('height', '');
+
+        const htmlContent = $('body').html();
+
+        // console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] html content of your note: ${htmlContent}`);
+
+        return {
+          noteText: htmlContent,
+          dateStamp: modifiedTime
+        };
+      } catch (err) {
+        console.log(
+          `[MMM-GoogleDocs-Notes] Failed to get the content of your note. The docs API returned an error: ${err}`
+        );
+        throw err;
+      }
+    } catch (err) {
+      console.log(
+        `[MMM-GoogleDocs-Notes] Failed to get the last modified time of your note. The docs API returned an error: ${err}`
+      );
+      throw err;
+    }
+  },
 
   /**
    * Retrieves note from google drive and sends information to the browser.
@@ -78,50 +120,18 @@ module.exports = NodeHelper.create({
         console.log('[MMM-GoogleDocs-Notes] Did not find your note in drive.');
       }
 
-      const notes = [];
+      const tasks = [];
       for (const note of files) {
         const noteDocumentId = note.id;
         console.log(`[MMM-GoogleDocs-Notes] noteDocumentId: ${noteDocumentId}`);
-
-        try {
-          const { modifiedTime } = (await drive.files.get({
-            fileId: noteDocumentId,
-            fields: ['modifiedTime']
-          })).data;
-
-          console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] last modified time of the note: ${modifiedTime}`);
-
-          try {
-            const content = (await drive.files.export({
-              fileId: noteDocumentId,
-              mimeType: 'text/html'
-            })).data;
-
-            // console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] doc content of your note: ${content}`);
-
-            const $ = cheerio.load(content);
-            $('*').css('width', '');
-            $('*').css('height', '');
-
-            const htmlContent = $('body').html();
-
-            // console.log(`[MMM-GoogleDocs-Notes][${noteDocumentId}] html content of your note: ${htmlContent}`);
-
-            notes.push({
-              noteText: htmlContent,
-              dateStamp: modifiedTime
-            });
-          } catch (err) {
-            console.log(
-              `[MMM-GoogleDocs-Notes] Failed to get the content of your note. The docs API returned an error: ${err}`
-            );
-          }
-        } catch (err) {
-          console.log(
-            `[MMM-GoogleDocs-Notes] Failed to get the last modified time of your note. The docs API returned an error: ${err}`
-          );
-        }
+        const task = moduleInstance.getTask(drive, noteDocumentId);
+        tasks.push(task);
       }
+
+      const results = await Promise.all(tasks.map((p) => p.catch((e) => e)));
+      const notes = results.filter((result) => !(result instanceof Error));
+
+
       moduleInstance.sendSocketNotification(
         'MMM-GOOGLEDOCS-NOTES-RESPONSE',
         { data: notes }

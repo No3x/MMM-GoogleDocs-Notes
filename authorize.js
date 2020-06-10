@@ -48,6 +48,7 @@ function authorize(credentials, callback) {
     if (err) {
       getNewToken(oauth2Client, callback);
     } else {
+      console.log('Using previously stored token from: ', TOKEN_PATH);
       oauth2Client.credentials = JSON.parse(token);
       callback(oauth2Client);
     }

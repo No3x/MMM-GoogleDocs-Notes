@@ -5,29 +5,14 @@
  * MIT Licensed.
  */
 
-const fs = require('fs');
 const readline = require('readline');
-const googleAuth = require('google-auth-library');
+const { google } = require('googleapis');
+const { TOKEN_PATH, loadSecret, storeToken, loadToken } = require('./lib/tokens');
 
 const SCOPES = [
-  'https://www.googleapis.com/auth/drive.metadata',
-  'https://www.googleapis.com/auth/drive.readonly',
-  'https://www.googleapis.com/auth/drive.file'
+  'https://www.googleapis.com/auth/drive.metadata.readonly',
+  'https://www.googleapis.com/auth/drive.readonly'
 ];
-
-const TOKEN_DIR = `${process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE}/.credentials`;
-const TOKEN_PATH = `${TOKEN_DIR}/MMM-GoogleDocs-Notes.json`;
-
-// Load client secrets from a local file.
-fs.readFile('client_secret.json', (err, content) => {
-  if (err) {
-    console.log(`Error loading client secret file: ${err}`);
-    return;
-  }
-  // Authorize a client with the loaded credentials, then call the
-  // Google API.
-  authorize(JSON.parse(content), finishAuthorization);
-});
 
 /**
  * Create an OAuth2 client with the given credentials, and then execute the
@@ -37,22 +22,20 @@ fs.readFile('client_secret.json', (err, content) => {
  * @param {function} callback The callback to call with the authorized client.
  */
 function authorize(credentials, callback) {
-  const clientSecret = credentials.installed.client_secret;
-  const clientId = credentials.installed.client_id;
-  const redirectUrl = credentials.installed.redirect_uris[0];
-  const auth = new googleAuth();
-  const oauth2Client = new auth.OAuth2(clientId, clientSecret, redirectUrl);
+  const { client_secret, client_id, redirect_uris } = credentials.installed;
+  const oauth2Client = new google.auth.OAuth2(
+    client_id,
+    client_secret,
+    redirect_uris[0]
+  );
 
-  // Check if we have previously stored a token.
-  fs.readFile(TOKEN_PATH, (err, token) => {
-    if (err) {
-      getNewToken(oauth2Client, callback);
-    } else {
-      console.log('Using previously stored token from: ', TOKEN_PATH);
-      oauth2Client.credentials = JSON.parse(token);
-      callback(oauth2Client);
-    }
-  });
+  try {
+    const token = loadToken();
+    oauth2Client.setCredentials(JSON.parse(token));
+    callback(oauth2Client);
+  } catch (e) {
+    return getNewToken(oauth2Client, callback);
+  }
 }
 
 /**
@@ -73,7 +56,7 @@ function getNewToken(oauth2Client, callback) {
     input: process.stdin,
     output: process.stdout
   });
-  rl.question('Enter the code from that page here: ', code => {
+  rl.question('Enter the code from that page here: ', (code) => {
     rl.close();
     oauth2Client.getToken(code, (err, token) => {
       if (err) {
@@ -87,23 +70,12 @@ function getNewToken(oauth2Client, callback) {
   });
 }
 
-/**
- * Store token to disk be used in later program executions.
- *
- * @param {Object} token The token to store to disk.
- */
-function storeToken(token) {
-  try {
-    fs.mkdirSync(TOKEN_DIR);
-  } catch (err) {
-    if (err.code !== 'EEXIST') {
-      throw err;
-    }
-  }
-  fs.writeFileSync(TOKEN_PATH, JSON.stringify(token));
-  console.log(`Token stored to ${TOKEN_PATH}`);
-}
-
 function finishAuthorization(auth) {
   console.log('MMM-GoogleDocs-Notes is authorized.');
 }
+
+// Load client secrets from a local file.
+const secret = loadSecret();
+// Authorize a client with the loaded credentials, then call the
+// Google API.
+authorize(JSON.parse(secret), finishAuthorization);

@@ -7,11 +7,10 @@
 
 const NodeHelper = require('node_helper');
 const cheerio = require('cheerio');
-const fs = require('fs');
 const { google } = require('googleapis');
-
-const TOKEN_DIR = `${process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE}/.credentials`;
-const TOKEN_PATH = `${TOKEN_DIR}/MMM-GoogleDocs-Notes.json`;
+const {
+  storeToken, loadToken, loadSecret
+} = require('./lib/tokens');
 
 let moduleInstance = null;
 let config = null;
@@ -35,13 +34,15 @@ module.exports = NodeHelper.create({
       redirect_uris[0]
     );
 
-    // Check if we have previously stored a token.
-    fs.readFile(TOKEN_PATH, (err, token) => {
-      if (err) return this.getNewToken(oAuth2Client, callback);
+    oAuth2Client.on('tokens', storeToken);
+
+    try {
+      const token = loadToken();
       oAuth2Client.setCredentials(JSON.parse(token));
       callback(oAuth2Client);
-      return false;
-    });
+    } catch (e) {
+      return this.getNewToken(oAuth2Client, callback);
+    }
   },
 
   /**
@@ -155,16 +156,9 @@ module.exports = NodeHelper.create({
         config = payload;
       }
 
-      // console.log(`[MMM-GoogleDocs-Notes] TOKEN_PATH:${TOKEN_PATH}`);
+      const secret = loadSecret();
 
-      // Load client secrets from a local file.
-      fs.readFile(`${this.path}/client_secret.json`, (err, content) => {
-        if (err) return console.log('Error loading client secret file:', err);
-        // Authorize a client with credentials, then call the Google Docs API.
-        console.log('[MMM-GoogleDocs-Notes] authorizing...');
-        this.authorize(JSON.parse(content), this.getNoteData);
-        return false;
-      });
+      this.authorize(JSON.parse(secret), this.getNoteData);
     }
   }
 });

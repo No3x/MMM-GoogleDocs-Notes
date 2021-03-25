@@ -7,7 +7,7 @@
 
 const readline = require('readline');
 const { google } = require('googleapis');
-const { TOKEN_PATH, loadSecret, storeToken, loadToken } = require('./lib/tokens');
+const { TOKEN_PATH, loadSecret, storeToken, loadTokens } = require('./lib/tokens');
 
 const SCOPES = [
   'https://www.googleapis.com/auth/drive.metadata.readonly',
@@ -30,7 +30,7 @@ function authorize(credentials, callback) {
   );
 
   try {
-    const token = loadToken();
+    const token = loadTokens();
     oauth2Client.setCredentials(JSON.parse(token));
     callback(oauth2Client);
   } catch (e) {

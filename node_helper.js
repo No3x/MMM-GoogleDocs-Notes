@@ -8,8 +8,10 @@
 const NodeHelper = require('node_helper');
 const cheerio = require('cheerio');
 const { google } = require('googleapis');
+const merge = require('lodash.merge');
+
 const {
-  storeToken, loadToken, loadSecret
+  storeToken, loadTokens, loadSecret
 } = require('./lib/tokens');
 
 let moduleInstance = null;
@@ -34,11 +36,19 @@ module.exports = NodeHelper.create({
       redirect_uris[0]
     );
 
-    oAuth2Client.on('tokens', storeToken);
+    oAuth2Client.on('tokens', (tokens) => {
+      // console.log(`[MMM-GoogleDocs-Notes] new tokens: ${JSON.stringify(tokens)}`);
+
+      const oldTokens = loadTokens();
+      const mergedTokens = merge(JSON.parse(oldTokens), tokens);
+      // console.log(`[MMM-GoogleDocs-Notes] store and use merged tokens: ${JSON.stringify(mergedTokens)}`);
+      storeToken(mergedTokens);
+      if (oAuth2Client) oAuth2Client.setCredentials(mergedTokens);
+    });
 
     try {
-      const token = loadToken();
-      oAuth2Client.setCredentials(JSON.parse(token));
+      const tokens = loadTokens();
+      oAuth2Client.setCredentials(JSON.parse(tokens));
       callback(oAuth2Client);
     } catch (e) {
       return this.getNewToken(oAuth2Client, callback);
@@ -132,7 +142,6 @@ module.exports = NodeHelper.create({
       const results = await Promise.all(tasks.map((p) => p.catch((e) => e)));
       const notes = results.filter((result) => !(result instanceof Error));
 
-
       moduleInstance.sendSocketNotification(
         'MMM-GOOGLEDOCS-NOTES-RESPONSE',
         { data: notes }
@@ -157,7 +166,6 @@ module.exports = NodeHelper.create({
       }
 
       const secret = loadSecret();
-
       this.authorize(JSON.parse(secret), this.getNoteData);
     }
   }

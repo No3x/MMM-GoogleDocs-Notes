@@ -37,11 +37,11 @@ module.exports = NodeHelper.create({
     );
 
     oAuth2Client.on('tokens', (tokens) => {
-      // console.log(`[MMM-GoogleDocs-Notes] new tokens: ${JSON.stringify(tokens)}`);
+      console.log(`[MMM-GoogleDocs-Notes] new tokens: ${JSON.stringify(tokens)}`);
 
       const oldTokens = loadTokens();
       const mergedTokens = merge(JSON.parse(oldTokens), tokens);
-      // console.log(`[MMM-GoogleDocs-Notes] store and use merged tokens: ${JSON.stringify(mergedTokens)}`);
+      console.log(`[MMM-GoogleDocs-Notes] store and use merged tokens: ${JSON.stringify(mergedTokens)}`);
       storeToken(mergedTokens);
       if (oAuth2Client) oAuth2Client.setCredentials(mergedTokens);
     });

@@ -10,9 +10,7 @@ const readline = require('readline');
 const googleAuth = require('google-auth-library');
 
 const SCOPES = [
-  'https://www.googleapis.com/auth/drive.metadata',
-  'https://www.googleapis.com/auth/drive.readonly',
-  'https://www.googleapis.com/auth/drive.file'
+  'https://www.googleapis.com/auth/drive.readonly'
 ];
 
 const TOKEN_DIR = `${process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE}/.credentials`;

@@ -24,6 +24,8 @@ Unfortunately Google does not provide an API for Keep to query the content for a
 ## Authorization
 It is very important that you follow these steps although they are not very exact but you should be able to follow. Before this module will work, you need to grant authorization for this module to access your Google Drive account.
 
+[mmm-2.webm](https://user-images.githubusercontent.com/2690708/179830680-ddafeb39-c15f-476e-a8b1-8071a3974b29.webm)
+
 1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. Don't use an existing one, as we need to make some specific configurations that may conflict with your existing project.
 2. Once you've created your project, click *Continue*, then *Go to credentials*.
 3. On the *Add credentials to your project* page, click the *Cancel* button.

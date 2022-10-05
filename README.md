@@ -29,7 +29,7 @@ It is very important that you follow these steps although they are not very exac
 1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. Don't use an existing one, as we need to make some specific configurations that may conflict with your existing project.
 2. Once you've created your project, click *Continue*, then *Go to credentials*.
 3. On the *Add credentials to your project* page, click the *Cancel* button.
-4. At the top of the page, select the *OAuth consent screen* tab. 
+4. At the top of the page, select the *OAuth consent screen* tab.
 5. Enter the Product name `Magic Mirror Notes`.
 6. Select your GMail address. This is just the account with which you are associating your developer account. It doesn't need to be the same as the Google account for which you want to display notes.
 7. Click the *Save* button.
@@ -47,9 +47,8 @@ If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in 
 
 Note: This application uses the following scopes:
 ```text
-https://www.googleapis.com/auth/drive.metadata
+https://www.googleapis.com/auth/drive.metadata.readonly
 https://www.googleapis.com/auth/drive.readonly
-https://www.googleapis.com/auth/drive.file
 ```
 
 

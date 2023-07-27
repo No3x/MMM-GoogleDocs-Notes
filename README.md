@@ -78,8 +78,8 @@ It is very important that you follow these steps. Before this module will work, 
 13. Click the file download icon button to the right of the client ID.
 14. Rename this file `client_secret.json` and copy it to your MMM-GoogleDocs-Notes directory.
 15. In the *MMM-GoogleDocs-Notes* directory execute
-     1. `node authorize.js`
-     2. or if you run MM on a raspberry pi `sudo -u pi -- node authorize.js` (Change `pi` to the user that runs the Magic Mirror application).
+     1. `node authorize.mjs`
+     2. or if you run MM on a raspberry pi `sudo -u pi -- node authorize.mjs` (Change `pi` to the user that runs the Magic Mirror application).
 16. Follow the instructions to authorize the Google account for which you want to display notes on your mirror.
     1. You will see a URL and a code
     2. Open the URL on a PC, Tablet, Phone or any device and enter the code
@@ -152,8 +152,8 @@ The current procedure: it queries for all documents, filters by titles that star
 
 ## Troubleshooting
 ### OAuth
-Since the OAuth-Authorization-Token is stored in the users home directory make sure to execute `node authorize.js` as the same user that runs the MagicMirror instance (user `pi` in my case).
-To ensure it execute the command explicitly as user `pi`: `sudo -u pi -- node authorize.js`
+Since the OAuth-Authorization-Token is stored in the users home directory make sure to execute `node authorize.mjs` as the same user that runs the MagicMirror instance (user `pi` in my case).
+To ensure it execute the command explicitly as user `pi`: `sudo -u pi -- node authorize.mjs`
 ### Outputs
 While setup watch the logs: `tail -f /home/pi/.pm2/logs/mm-out.log`. Log messages are prefixed with `[MMM-GoogleDocs-Notes]`. Watch out for scope errors and urls to open your browser in case the scope is not sufficient (like `The drive API returned an error: Error: Insufficient Permission: Request had insufficient authentication scopes.`).
 

@@ -10,48 +10,88 @@ This module displays a Google Doc as note from your Google account.
 
 ## Installation
 
-1. Navigate to your MagicMirror `modules` directory and execute<br />`git clone https://github.com/No3x/MMM-GoogleDocs-Notes.git`
+1. Navigate to your MagicMirror `modules` directory and execute<br /> `git clone https://github.com/No3x/MMM-GoogleDocs-Notes.git`
 
 2. Enter the new `MMM-GoogleDocs-Notes` directory and execute `npm install`.
 
-3. Create a Google Doc and write the note you want to display at the MagicMirror. (use `MMM` as title or remember it for later configuration of the `notesPrefix` key)
+3. Obtain token ([see Authentication & Authorization](#authentication--authorization))
 
-4. Add the module to your config (see below).
+4. Add the module to your config ([see Sample Configuration](#sample-config)).
 
 ## Google Keep
-Unfortunately Google does not provide an API for Keep to query the content for a note from there. Therefore we use a Google Doc that can be edited by multiple users.
+Unfortunately Google does not provide an API for Keep to query the content for a note from there. Therefore, we use a Google Doc that can be edited by multiple users.
 
-## Authorization
-It is very important that you follow these steps although they are not very exact but you should be able to follow. Before this module will work, you need to grant authorization for this module to access your Google Drive account.
+## Changes
 
-[mmm-2.webm](https://user-images.githubusercontent.com/2690708/179830680-ddafeb39-c15f-476e-a8b1-8071a3974b29.webm)
+### 3.0.0
+Before version 3 the module used the OAuth 2.0 out-of-band (OOB) authentication flow. It was basically the manual copy/paste option, as a legacy flow developed to support native clients which do not have a redirect URI to accept the credentials after a user approves an OAuth consent request. This authentication mechanism used before was deprecated by Google.
 
-1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. Don't use an existing one, as we need to make some specific configurations that may conflict with your existing project.
+With version 3 the authentication changed to OAuth 2.0 for TV and Limited-Input Device Applications. The scope `https://www.googleapis.com/auth/drive.file` is used which means the module can access files created by the module only and has no access to the rest of your drive.
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor You
+    participant Any Device as Any Device (PC/Tablet/Phone)
+    participant Module as MM Module
+    participant Google
+    Module->>+Google: Request Authorization
+    Google-->>-Module: URL & 🔑
+    Module->>+Module: Display URL & 🔑
+    You->>+Any Device: Open URL & enter 🔑
+    Any Device->>+Google: Send URL & 🔑
+    Google-->>-Any Device: Done
+    Any Device-->>-You: Done
+    Module->>+Google: Check if authorized
+    Google-->>-Module: Access Token 🔐
+    Module->>+Google: Use Google Drive API 🔐
+```
+1. MM Module sends a request to Google's authorization server and asks for scope `drive.file`.
+2. The Google server responds with several pieces of information used in subsequent steps, such as a device code and a user code.
+3. The prompt will show you the information that you can enter on a separate device to authorize the module to access your Google Drive.
+4. You switch to a device with richer input capabilities, launch a web browser, navigate to the URL displayed in step 3 and enter a code that is also displayed in step 3. You can then grant (or deny) access to your Google Drive.
+5. Transfer
+6. Done
+7. Done
+8. MM Module checks Google's authorization server to determine whether your have authorized the module.
+9. If granted the next response contains the tokens the module needs to authorize requests on your behalf.
+10. The token is used for Google Drive API access
+
+This changes imply
+1. Previously it was possible to scan your Google Docs by searching for the `notesPrefix`. Now it is possible to access files created by the module only. Therefore, the module will create a new Google Doc if not present (by using `notesPrefix`). This implies there is support for only one note at a time currently.
+
+## Authentication & Authorization
+It is very important that you follow these steps. Before this module will work, you need to grant authorization for this module to access your Google Drive account.
+
+1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. If you use an existing one, it might conflict with your existing project.
 2. Once you've created your project, click *Continue*, then *Go to credentials*.
 3. On the *Add credentials to your project* page, click the *Cancel* button.
-4. At the top of the page, select the *OAuth consent screen* tab. 
-5. Enter the Product name `Magic Mirror Notes`.
-6. Select your GMail address. This is just the account with which you are associating your developer account. It doesn't need to be the same as the Google account for which you want to display notes.
+4. At the top of the page, select the *OAuth consent screen* tab.
+5. Enter the Product name e.g. `Magic Mirror Notes`.
+6. Select your GMail address. This is just the account with which you are associating your developer account.
 7. Click the *Save* button.
 8. Select the *Credentials* tab, click the *Create credentials* button and select *OAuth client ID*.
-9. Select the application type *Other*
-10. Enter the name `Magic Mirror Notes`. It is important that this matches exactly.
+9. Select the application type *TV and limited Input Devices*
+10. Enter a name e.g. `Magic Mirror Notes`.
 11. Click the *Create* button.
 12. Click *OK* to dismiss the resulting dialog.
 13. Click the file download icon button to the right of the client ID.
 14. Rename this file `client_secret.json` and copy it to your MMM-GoogleDocs-Notes directory.
-15. In the *MMM-GoogleDocs-Notes* directory execute  `sudo -u pi -- node authorize.js` (Change `pi` to the user that runs the Magic Mirror application).
+15. In the *MMM-GoogleDocs-Notes* directory execute
+     1. `node authorize.js`
+     2. or if you run MM on a raspberry pi `sudo -u pi -- node authorize.js` (Change `pi` to the user that runs the Magic Mirror application).
 16. Follow the instructions to authorize the Google account for which you want to display notes on your mirror.
+    1. You will see a URL and a code
+    2. Open the URL on a PC, Tablet, Phone or any device and enter the code
+    3. Login to you google account
+    4. Grant access to your Google Drive
 
-If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in your console. Now you can configure your module as below.
+If everything went well, you should see `MMM-GoogleDocs-Notes is authorized` in your console.
 
 Note: This application uses the following scopes:
 ```text
-https://www.googleapis.com/auth/drive.metadata
-https://www.googleapis.com/auth/drive.readonly
 https://www.googleapis.com/auth/drive.file
 ```
-
 
 ## Configuration
 

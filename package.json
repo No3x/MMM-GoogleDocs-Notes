@@ -1,6 +1,6 @@
 {
   "name": "mmmgoogledocsnotes",
-  "version": "2.2.0",
+  "version": "2.1.0",
   "description": "Magic Mirror Module to display GoogleDocs notes",
   "main": "MMM-GoogleDocs-Notes.js",
   "repository": {
@@ -8,18 +8,23 @@
     "url": "https://github.com/No3x/MMM-GoogleDocs-Notes.git"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "authorize": "node authorize.mjs"
   },
   "author": "No3x",
   "license": "MIT",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.3",
-    "google-auth-library": "0.10.0",
-    "googleapis": "^39.2.0"
+    "axios": "^1.4.0",
+    "cheerio": "^1.0.0-rc.12",
+    "googleapis": "^123.0.0",
+    "ora": "^6.3.1"
+  },
+  "engines" : {
+  	"node" : ">=13.0.0"
   },
   "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-plugin-import": "^2.18.2"
+    "eslint": "^8.45",
+    "eslint-config-airbnb-base": "^15.0",
+    "eslint-plugin-import": "^2.27"
   }
 }

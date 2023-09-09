@@ -63,6 +63,8 @@ This changes imply
 ## Authentication & Authorization
 It is very important that you follow these steps. Before this module will work, you need to grant authorization for this module to access your Google Drive account.
 
+The process is described in the [INSTALL.md](INSTALL.md) file.
+
 1. Go to https://console.developers.google.com/flows/enableapi?apiid=drive&pli=1 and create a new project. If you use an existing one, it might conflict with your existing project.
 2. Once you've created your project, click *Continue*, then *Go to credentials*.
 3. On the *Add credentials to your project* page, click the *Cancel* button.

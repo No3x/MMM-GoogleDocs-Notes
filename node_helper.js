@@ -28,11 +28,10 @@ module.exports = NodeHelper.create({
    * @param {function} callback The callback to call with the authorized client.
    */
   authorize(credentials, callback) {
-    const { client_secret, client_id, redirect_uris } = credentials.installed;
+    const { client_secret, client_id } = credentials.installed;
     const oAuth2Client = new google.auth.OAuth2(
       client_id,
-      client_secret,
-      redirect_uris[0]
+      client_secret
     );
 
     // Check if we have previously stored a token.
@@ -52,7 +51,7 @@ module.exports = NodeHelper.create({
    */
   getNewToken(oAuth2Client, callback) {
     console.log(
-      '[MMM-GoogleDocs-Notes] Creating a token is an interactive process that requires user input. For that please run \\"node authorize.js\\" in the MMM-GoogleDocs-Notes directory'
+      '[MMM-GoogleDocs-Notes] Creating a token is an interactive process that requires user input. For that please run \\"node authorize.mjs\\" in the MMM-GoogleDocs-Notes directory'
     );
   },
   async getTask(drive, noteDocumentId) {
@@ -99,7 +98,7 @@ module.exports = NodeHelper.create({
   },
 
   /**
-   * Retrieves note from google drive and sends information to the browser.
+   * Retrieves note from Google Drive and sends information to the browser.
    * @param {google.auth.OAuth2} auth The authenticated Google OAuth 2.0 client.
    */
   async getNoteData(auth) {
@@ -118,6 +117,14 @@ module.exports = NodeHelper.create({
 
       if (!files.length > 0) {
         console.log('[MMM-GoogleDocs-Notes] Did not find your note in drive.');
+
+        await drive.files.create({
+          requestBody: {
+            mimeType: 'application/vnd.google-apps.document',
+            name: `${config.notesPrefix} Google Docs Note`,
+            body: 'The first note'
+          }
+        });
       }
 
       const tasks = [];

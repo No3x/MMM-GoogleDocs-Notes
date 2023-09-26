@@ -193,7 +193,7 @@ Follow the instructions to authorize the Google account for which you want to di
 
 
 ### 37. Authorization Done
-![Step 37 screenshot](https://images.tango.us/workflows/cc6e00ec-9201-4156-adbc-aa44e7bc1f18/steps/a8ab148d-2f6e-4db1-ae0b-11cfc18d2d7f/2867f6e6-1524-478e-83f6-81451c699c06.png?crop=focalpoint&fit=crop&fp-x=0.5000&fp-y=0.5004&fp-z=1.4291&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=417&mark-y=153&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0zNjcmaD00MDkmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
+![Step 37 screenshot](https://images.tango.us/workflows/cc6e00ec-9201-4156-adbc-aa44e7bc1f18/steps/a8ab148d-2f6e-4db1-ae0b-11cfc18d2d7f/dc73ca94-b6a8-44bb-8d5f-0b8744e23376.png?crop=focalpoint&fit=crop&fp-x=0.5000&fp-y=0.5004&fp-z=1.4291&w=1200&border=2%2CF4F2F7&border-radius=8%2C8%2C8%2C8&border-radius-inner=8%2C8%2C8%2C8&blend-align=bottom&blend-mode=normal&blend-x=0&blend-w=1200&blend64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL21hZGUtd2l0aC10YW5nby13YXRlcm1hcmstdjIucG5n&mark-x=417&mark-y=153&m64=aHR0cHM6Ly9pbWFnZXMudGFuZ28udXMvc3RhdGljL2JsYW5rLnBuZz9tYXNrPWNvcm5lcnMmYm9yZGVyPTYlMkNGRjc0NDImdz0zNjcmaD00MDkmZml0PWNyb3AmY29ybmVyLXJhZGl1cz0xMA%3D%3D)
 
 
 ### 38. Continue in the cli

@@ -16,7 +16,7 @@
   "dependencies": {
     "axios": "^1.5.0",
     "cheerio": "^1.0.0-rc.12",
-    "googleapis": "^126.0.1",
+    "googleapis": "^127.0.0",
     "ora": "^7.0.1"
   },
   "engines" : {
